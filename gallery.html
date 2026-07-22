@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鹅的哲学</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="gallery-page">
+    <!-- ===== 顶部音乐控制 ===== -->
+    <div id="music-control">
+        <button id="music-toggle" onclick="toggleMusic()">🎵 播放音乐</button>
+        <audio id="bgm" loop>
+            <source src="2/Laura Shigihara - Zen Garden.mp3" type="audio/mpeg">
+            您的浏览器不支持 audio 元素。
+        </audio>
+    </div>
+
+    <!-- 背景 -->
+    <div class="gallery-wallpaper">
+        <img src="2/两小只.png" alt="背景">
+    </div>
+    
+    <!-- 返回按钮 -->
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        返回
+    </button>
+
+    <!-- 下一页按钮 -->
+    <button class="next-page-btn" onclick="window.location.href='photos.html'">
+        <span>下一页</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+        </svg>
+    </button>
+
+    <!-- 相册主体 -->
+    <div class="photo-album">
+        <div class="album-container">
+            <!-- 左箭头 -->
+            <button class="album-nav prev-btn" id="album-prev" onclick="changePhoto(-1)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            
+            <!-- 照片框 -->
+            <div class="photo-frame">
+                <img id="current-photo" src="2/条鹅/1.png" alt="照片">
+                <div class="photo-shadow"></div>
+                <div class="album-indicator">
+                    <span id="photo-counter">1 / 9</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右箭头 -->
+            <button class="album-nav next-btn" id="album-next" onclick="changePhoto(1)">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </button>
+
+            <!-- 问卷容器 -->
+            <div class="quiz-container" id="quiz-container">
+                <div class="quiz-question" id="quiz-question">是否喜欢小鹅的哲学？</div>
+                <div class="quiz-options">
+                    <!-- 选项 A -->
+                    <div class="quiz-option-wrapper">
+                        <button class="quiz-option option-a" id="option-a" onclick="answerQuiz('A')">
+                            A. 喜欢
+                        </button>
+                        <img src="/2/条鹅的赞赏/嘿嘿脸红.jpg" alt="喜欢" class="image-popup" id="img-a">
+                    </div>
+                    <!-- 选项 B -->
+                    <div class="quiz-option-wrapper">
+                        <button class="quiz-option option-b" id="option-b" onclick="answerQuiz('B')">
+                            B. 非常喜欢
+                        </button>
+                        <img src="/2/条鹅的赞赏/骄傲的鹅.jpg" alt="非常喜欢" class="image-popup" id="img-b">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

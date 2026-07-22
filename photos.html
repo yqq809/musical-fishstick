@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>照片墙</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="photos-page">
+    <!-- ===== 顶部音乐控制 ===== -->
+    <div id="music-control">
+        <button id="music-toggle" onclick="toggleMusic()">🎵 播放音乐</button>
+        <audio id="bgm" loop>
+            <source src="2/傅如乔+-+微微.mp3" type="audio/mpeg">
+            您的浏览器不支持 audio 元素。
+        </audio>
+    </div>
+
+    <!-- 背景 -->
+    <div class="photos-wallpaper">
+        <img src="2/两小只.png" alt="背景">
+    </div>
+    
+    <!-- 返回按钮 -->
+    <button class="back-btn" onclick="window.location.href='gallery.html'">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        返回
+    </button>
+
+    <!-- 照片墙主体 -->
+    <div class="photo-wall-container">
+        <div class="photo-wall">
+            <div class="photo-item rotate-1">
+                <img src="3/1.jpg" alt="照片1">
+            </div>
+            <div class="photo-item rotate-2">
+                <img src="3/2.jpg" alt="照片2">
+            </div>
+            <div class="photo-item rotate-3">
+                <img src="3/3.jpg" alt="照片3">
+            </div>
+            <div class="photo-item rotate-4">
+                <img src="3/4.jpg" alt="照片4">
+            </div>
+            <div class="photo-item rotate-5">
+                <img src="3/5.jpg" alt="照片5">
+            </div>
+            <div class="photo-item rotate-6">
+                <img src="3/6.jpg" alt="照片6">
+              </div>
+            <div class="photo-item rotate-7">
+                <img src="3/7.jpg" alt="照片7">
+                 </div>
+            <div class="photo-item rotate-8">
+                <img src="3/8.jpg" alt="照片8">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
