@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>照片墙</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="photos-page">
+    <!-- ===== 顶部音乐控制 ===== -->
+    <div id="music-control">
+        <button id="music-toggle" onclick="toggleMusic()">🎵 播放音乐</button>
+        <audio id="bgm" loop>
+            <source src="2/weiwei.mp3" type="audio/mpeg">
+            您的浏览器不支持 audio 元素。
+        
+    </div>
+
+    <!-- 背景视频 -->
+    <div class="photos-video-container">
+        <video class="photos-video active" id="video-0" muted autoplay playsinline loop>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_030107_874273ea-684a-4e90-bb96-8fdfde48d53d.mp4" type="video/mp4">
+        </video>
+        <video class="photos-video" id="video-1" muted autoplay playsinline loop>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_032424_3c9c2a9d-807b-4482-80e6-dd6d9dfd4545.mp4" type="video/mp4">
+        </video>
+        <video class="photos-video" id="video-2" muted autoplay playsinline loop>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260627_094019_4214ea73-b963-46a4-8327-61489192de99.mp4" type="video/mp4">
+        </video>
+        <!-- 叠加层 -->
+        <div class="photos-video-overlay"></div>
+    </div>
+
+    <!-- 粒子效果 -->
+    <div class="particles-container" id="particles-container"></div>
+    
+    <!-- 返回按钮 -->
+    <button class="back-btn" onclick="window.location.href='gallery.html'">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        返回
+    </button>
+
+    <!-- 照片墙主体 -->
+    <div class="photo-wall-container">
+        <div class="photo-wall">
+            <div class="photo-item rotate-1" data-index="0">
+                <img src="3/1.jpg" alt="照片1">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-2" data-index="1">
+                <img src="3/2.jpg" alt="照片2">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-3" data-index="2">
+                <img src="3/3.jpg" alt="照片3">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-4" data-index="3">
+                <img src="3/4.jpg" alt="照片4">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-5" data-index="4">
+                <img src="3/5.jpg" alt="照片5">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-6" data-index="5" id="photo-6">
+                <img src="3/6.jpg" alt="照片6">
+                <div class="aurora-overlay"></div>
+                <!-- 爱心容器 -->
+                <div class="hearts-container" id="hearts-container"></div>
+                <!-- 日期文字 -->
+                <div class="photo-date" id="photo-date">2025.06.03 黄果树瀑布</div>
+            </div>
+            <div class="photo-item rotate-7" data-index="6">
+                <img src="3/7.jpg" alt="照片7">
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="photo-item rotate-8" data-index="7">
+                <img src="3/8.jpg" alt="照片8">
+                <div class="aurora-overlay"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

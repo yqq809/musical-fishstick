@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foldcraft - Creative Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes errorShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+      }
+
+      .error-shake {
+        animation: errorShake 0.4s ease-in-out;
+      }
+
+      .font-geist {
+        font-family: 'Geist', sans-serif;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              geist: ['Geist', 'sans-serif'],
+            },
+          },
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const { useState, useRef } = React
+      const { createRoot } = ReactDOM
+
+      const CORRECT_PASSWORD = '20180906'
+
+      function IconMenu({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          className: className
+        },
+          React.createElement('line', { x1: '4', y1: '6', x2: '20', y2: '6' }),
+          React.createElement('line', { x1: '4', y1: '12', x2: '20', y2: '12' }),
+          React.createElement('line', { x1: '4', y1: '18', x2: '20', y2: '18' })
+        )
+      }
+
+      function IconX({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          className: className
+        },
+          React.createElement('line', { x1: '18', y1: '6', x2: '6', y2: '18' }),
+          React.createElement('line', { x1: '6', y1: '6', x2: '18', y2: '18' })
+        )
+      }
+
+      function IconEye({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          className: className
+        },
+          React.createElement('path', { d: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' }),
+          React.createElement('circle', { cx: '12', cy: '12', r: '3' })
+        )
+      }
+
+      function IconEyeOff({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          className: className
+        },
+          React.createElement('path', { d: 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1 4.24 4.24' }),
+          React.createElement('line', { x1: '1', y1: '1', x2: '23', y2: '23' })
+        )
+      }
+
+      function IconCheck({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'white',
+          className: className
+        },
+          React.createElement('path', { d: 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' })
+        )
+      }
+
+      function IconArrowRight({ className }) {
+        return React.createElement('svg', {
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          className: className
+        },
+          React.createElement('line', { x1: '5', y1: '12', x2: '19', y2: '12' }),
+          React.createElement('polyline', { points: '12 5 19 12 12 19' })
+        )
+      }
+
+      function App() {
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+        const [password, setPassword] = useState('')
+        const [showHint, setShowHint] = useState(false)
+        const [isUnlocking, setIsUnlocking] = useState(false)
+        const [showPassword, setShowPassword] = useState(false)
+        const inputRef = useRef(null)
+        const wrapperRef = useRef(null)
+
+        const navLinks = ['Home', 'Projects', 'Studio', 'Reach Us']
+
+        const handlePasswordChange = (e) => {
+          if (e.target.value.length <= 8) {
+            setPassword(e.target.value)
+          }
+        }
+
+        const handleKeyDown = (e) => {
+          if (e.key === 'Enter') {
+            verifyPassword()
+          }
+        }
+
+        const verifyPassword = () => {
+          if (password === CORRECT_PASSWORD) {
+            setIsUnlocking(true)
+            setTimeout(() => {
+              window.location.href = 'gallery.html'
+            }, 800)
+          } else {
+            if (wrapperRef.current) {
+              wrapperRef.current.classList.add('error-shake')
+              setTimeout(() => {
+                wrapperRef.current.classList.remove('error-shake')
+              }, 400)
+            }
+            setPassword('')
+          }
+        }
+
+        const goToGallery = () => {
+          window.location.href = 'gallery.html'
+        }
+
+        return React.createElement(
+          'div',
+          { className: 'relative h-screen w-full overflow-hidden bg-black font-geist' },
+          // Video Background
+          React.createElement('video', {
+            autoPlay: true,
+            muted: true,
+            loop: true,
+            playsInline: true,
+            className: 'absolute inset-0 h-full w-full object-cover z-0',
+            style: { objectPosition: '70% center', pointerEvents: 'none' }
+          },
+            React.createElement('source', {
+              src: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4',
+              type: 'video/mp4'
+            })
+          ),
+          // Navbar
+          React.createElement('nav', { className: 'z-30 flex items-center justify-between px-6 py-5 md:px-12 lg:px-16' },
+            React.createElement('div', { className: 'flex items-center gap-8' },
+              React.createElement('span', { className: 'text-lg font-semibold tracking-tight text-white sm:text-xl' }, 'Foldcraft'),
+              React.createElement('div', { className: 'hidden md:flex items-center gap-8' },
+                navLinks.map(link =>
+                  React.createElement('a', {
+                    key: link,
+                    href: '#',
+                    className: 'text-sm text-white/80 hover:text-white transition-colors'
+                  }, link)
+                )
+              )
+            ),
+            React.createElement('div', { className: 'hidden md:block' },
+              React.createElement('button', { className: 'rounded-lg bg-white px-5 py-2 text-sm font-medium text-black hover:scale-105 transition-transform' },
+                "Let's Talk"
+              )
+            ),
+            // Mobile Menu Toggle
+            React.createElement('button', {
+              onClick: () => setMobileMenuOpen(!mobileMenuOpen),
+              className: 'flex h-10 w-10 items-center justify-center md:hidden active:scale-90',
+              style: { zIndex: 50 }
+            },
+              mobileMenuOpen ? React.createElement(IconX, { className: 'h-6 w-6 text-white transition-all duration-300' }) : React.createElement(IconMenu, { className: 'h-6 w-6 text-white transition-all duration-300' })
+            )
+          ),
+          // Mobile Menu
+          React.createElement('div', {
+            className: `absolute inset-x-0 top-0 bg-black/98 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen ? 'h-screen opacity-100' : 'h-0 opacity-0 pointer-events-none'}`,
+            style: { zIndex: 20 }
+          },
+            React.createElement('div', { className: 'flex h-full flex-col items-center justify-center px-8' },
+              navLinks.map((link, index) =>
+                React.createElement('a', {
+                  key: link,
+                  href: '#',
+                  onClick: () => setMobileMenuOpen(false),
+                  className: 'mb-6 text-3xl font-medium text-white/90 hover:text-white transition-all duration-300',
+                  style: { animation: mobileMenuOpen ? `fadeSlideUp 0.8s ease ${0.1 + index * 0.1}s both` : 'none' }
+                }, link)
+              ),
+              React.createElement('button', {
+                onClick: () => setMobileMenuOpen(false),
+                className: 'mt-6 rounded-full bg-white px-8 py-3.5 text-base font-medium text-black hover:scale-105 transition-transform',
+                style: { animation: mobileMenuOpen ? 'fadeSlideUp 0.8s ease 0.5s both' : 'none' }
+              },
+                "Let's Talk"
+              )
+            )
+          ),
+          // Lock Screen Content - Left Side
+          React.createElement('div', { className: 'z-10 absolute left-0 top-0 flex h-screen w-full flex-col justify-center px-6 md:px-12 lg:px-16' },
+            React.createElement('div', { className: 'w-full max-w-md' },
+              // Title - Single line
+              React.createElement('h1', { className: 'mb-12 whitespace-nowrap text-xl font-light tracking-[0.3em] text-white sm:text-xl md:text-xl animate-[fadeSlideUp_0.8s_ease_0.4s_both]' },
+                'ENTER THE SECRET CODE'
+              ),
+              // Password Input with eye icon
+              React.createElement('div', {
+                ref: wrapperRef,
+                className: 'relative w-full mb-6'
+              },
+                React.createElement('input', {
+                  ref: inputRef,
+                  type: showPassword ? 'text' : 'password',
+                  value: password,
+                  onChange: handlePasswordChange,
+                  onKeyDown: handleKeyDown,
+                  placeholder: '••••••••',
+                  maxLength: 8,
+                  autoComplete: 'off',
+                  className: 'w-full bg-transparent border-b border-white/30 py-4 pr-12 text-center text-3xl text-white placeholder:text-white/30 focus:outline-none focus:border-white/60 transition-colors'
+                }),
+                React.createElement('div', { className: 'absolute bottom-0 right-0 h-0.5 w-0 bg-white/60 transition-all duration-300', style: { width: `${(password.length / 8) * 100}%` } }),
+                // Eye icon button
+                React.createElement('button', {
+                  onClick: () => setShowPassword(!showPassword),
+                  className: 'absolute right-0 top-1/2 -translate-y-1/2 p-2 text-white/60 hover:text-white transition-colors'
+                },
+                  showPassword ? React.createElement(IconEyeOff, { className: 'h-5 w-5' }) : React.createElement(IconEye, { className: 'h-5 w-5' })
+                )
+              ),
+              // Hint Dots
+              React.createElement('div', { className: 'flex justify-center gap-3 mb-8' },
+                [1,2,3,4,5,6,7,8].map((dot, index) =>
+                  React.createElement('div', {
+                    key: dot,
+                    className: `h-2 w-2 rounded-full transition-all duration-300 ${index < password.length ? 'bg-white' : 'bg-white/30'}`
+                  })
+                )
+              ),
+              // Clue Button
+              React.createElement('button', {
+                onClick: () => setShowHint(!showHint),
+                className: 'block w-full text-center text-sm font-semibold tracking-[0.2em] text-white/60 hover:text-white/90 transition-colors mb-4'
+              },
+                'CLUE'
+              ),
+              // Hint Message
+              React.createElement('div', {
+                style: {
+                  opacity: showHint ? 1 : 0,
+                  height: showHint ? 'auto' : 0,
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  textAlign: 'center'
+                }
+              },
+                React.createElement('p', { className: 'text-sm text-white/70' },
+                  '我们加上联系方式的日子哦'
+                )
+              ),
+              // UNLOCK Button
+              React.createElement('button', {
+                onClick: verifyPassword,
+                disabled: isUnlocking,
+                className: `mt-8 block w-full rounded-lg px-8 py-3 text-sm font-medium text-white transition-all duration-300 ${isUnlocking ? 'bg-green-500' : 'bg-white/20 hover:bg-white/30'}`
+              },
+                isUnlocking ? React.createElement(IconCheck, { className: 'inline-block h-5 w-5' }) : 'UNLOCK'
+              )
+            )
+          )
+        )
+      }
+
+      createRoot(document.getElementById('root')).render(React.createElement(App))
+    </script>
+  </body>
+</html>
